@@ -1,0 +1,19 @@
+# Prevent two issues when compiling old gdb (7.1) on Ubuntu 24 (rpi4)
+# - ISL was not found, CT built a version for the host but was not found. Disabled for now.
+# - GDB's version of readline is too old for gcc 15. Simply using the system one.
+
+diff --git a/scripts/build/debug/300-gdb.sh b/scripts/build/debug/300-gdb.sh
+index 8d3c46db..39858adf 100644
+--- a/crosstool-NG/scripts/build/debug/300-gdb.sh
++++ b/crosstool-NG/scripts/build/debug/300-gdb.sh
+@@ -62,6 +62,10 @@ do_debug_gdb_build() {
+         [ -n "${CT_TOOLCHAIN_BUGURL}" ] && extra_config+=("--with-bugurl=${CT_TOOLCHAIN_BUGURL}")
+     fi
+ 
++    extra_config+=("--without-isl")
++    extra_config+=("--disable-readline")
++    extra_config+=("--with-system-readline")
++
+     if [ "${CT_GDB_CROSS}" = "y" ]; then
+         local -a cross_extra_config
+         local gcc_version

@@ -1,0 +1,15 @@
+Fix to prevent GCC 14+ from barfing on implicit return types and function declarations
+
+diff --git a/scripts/build/companion_libs/100-gmp.sh b/scripts/build/companion_libs/100-gmp.sh
+index b727f2b9..5e4a937f 100644
+--- a/crosstool-NG/scripts/build/companion_libs/100-gmp.sh
++++ b/crosstool-NG/scripts/build/companion_libs/100-gmp.sh
+@@ -90,7 +90,7 @@ do_gmp_backend() {
+     fi
+ 
+     CT_DoExecLog CFG                                \
+-    CFLAGS="${cflags} -fexceptions"                 \
++    CFLAGS="${cflags} -fexceptions -Wno-implicit-function-declaration -Wno-implicit-int"        \
+     LDFLAGS="${ldflags}"                            \
+     "${CT_SRC_DIR}/gmp-${CT_GMP_VERSION}/configure" \
+         --build=${CT_BUILD}                         \
